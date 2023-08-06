@@ -13,6 +13,8 @@ WORKDIR /app
 
 ARG MIX_ENV=prod
 
+EXPOSE 4000
+
 # Instale as dependências do Elixir
 RUN mix local.hex --force && mix local.rebar --force
 
@@ -20,20 +22,11 @@ RUN mix local.hex --force && mix local.rebar --force
 COPY mix.exs mix.lock ./
 COPY config config
 
-RUN mix do deps.get, deps.compile
-
 # Copie todos os arquivos para o contêiner
 COPY . ./
 
-# Copia o script de instalação do ChromeDriver para o contêiner
-COPY install_chromedriver.sh .
-
-# Instala o ChromeDriver durante a construção do contêiner
-RUN ./install_chromedriver.sh
-
 # Compile o projeto
-RUN mix do compile, release
+RUN mix do deps.get, deps.compile, compile, release
 
 # Comando padrão para iniciar o seu aplicativo
-COPY start.sh ./
-CMD ["sh", "./start.sh", "install_chromedriver.sh"]
+CMD ["sh", "./start.sh"]

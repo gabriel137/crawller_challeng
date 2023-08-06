@@ -2,31 +2,41 @@ version: '3.9'
 services:
   core:
     build: .
-    command: mix phx.server
+    container_name: test_konsi
+    command: iex -S mix phx.server
     ports:
       - "4000:4000"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
     depends_on:
       - rabbitmq
       - redis
     environment:
       RABBITMQ_URL: "amqp://guest:guest@rabbitmq"
-      REDIS_URL: "redis://redis:6379"
+      REDIS_URL: "redis://localhost:6379"
     networks:
       - konsi
 
   rabbitmq:
-    image: rabbitmq:latest
+    image: rabbitmq:3-management
+    container_name: rabbitmq_management
+    ports: 
+    - 25672:25672 
+    - 15672:15672
+    - 12345:12345
+    volumes:
+    - /docker_conf/rabbitmq/data/:/var/lib/rabbitmq/
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
-    ports:
-      - "5672:5672"
-      - "15672:15672"
+    - RABBITMQ_DEFAULT_USER = guest
+    - RABBITMQ_DEFAULT_PASS = guest
+    restart: always
     networks:
       - konsi
 
   redis:
-    image: redis:latest
+    image: "redis:alpine"
     ports:
       - "6379:6379"
     networks:
@@ -35,3 +45,8 @@ services:
 networks:
   konsi:
     name: konsi
+
+volumes:
+    logs-folder:
+        name: logs
+        driver: local

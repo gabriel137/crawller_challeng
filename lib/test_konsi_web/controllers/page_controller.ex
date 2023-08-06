@@ -1,7 +1,7 @@
 defmodule TestKonsiWeb.PageController do
   use TestKonsiWeb, :controller
 
-  alias TestKonsi.Crawler
+  alias TestKonsi.Elasticsearch
 
   def home(conn, _params) do
     # The home page is often custom made,
@@ -10,7 +10,7 @@ defmodule TestKonsiWeb.PageController do
   end
 
   def search(conn, %{"cpf" => cpf}) do
-    case Crawler.consultar_beneficios(cpf) do
+    case Elasticsearch.search_beneficios(cpf) do
       {:ok, beneficios} ->
         render(conn, "results.html", beneficios: beneficios)
       {:error, reason} ->

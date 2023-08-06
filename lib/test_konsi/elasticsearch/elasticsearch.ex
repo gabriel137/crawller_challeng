@@ -1,17 +1,16 @@
-defmodule TestKonsi.Crawler.Elasticsearch do
-  defp index_data(cpf, data) do
-    # Configurações do índice no Elasticsearch
+defmodule TestKonsi.Elasticsearch do
+  alias TestKonsi.Cluster, as: Elasticsearch
+  
+  def index_data(cpf, data) do
     index = "beneficios"
     type = "dados"
 
-    # Prepare o documento a ser indexado
     document = %{
       "cpf" => cpf,
       "beneficios" => data
     }
 
-    # Realize a indexação utilizando o ex_elasticsearch
-    case Elasticsearch.Index.index(index, type, document) do
+    case Elasticsearch.index(index, type, document) do
       {:ok, _result} ->
         IO.puts("Dados indexados com sucesso!")
       {:error, reason} ->
@@ -19,19 +18,17 @@ defmodule TestKonsi.Crawler.Elasticsearch do
     end
   end
 
-  defp search_beneficios(cpf) do
-    # Configurações do índice no Elasticsearch
+  def search_beneficios(cpf) do
     index = "beneficios"
     type = "dados"
 
-    # Consulta os dados no Elasticsearch
     query = %{
       "query" => %{
         "match" => %{"cpf" => cpf}
       }
     }
 
-    case Elasticsearch.Client.search(index, type, query) do
+    case Elasticsearch.search(index, type, query) do
       {:ok, result} ->
         # Processar os resultados da pesquisa (result["hits"]["hits"])
         result

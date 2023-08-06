@@ -57,14 +57,24 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 config :test_konsi, TestKonsi.Crawler,
-  rabbitmq_url: System.get_env("RABBITMQ_URL") || "amqp://guest:guest@localhost",
+  rabbitmq_url: System.get_env("RABBITMQ_URL") || "amqp://guest:guest@rabbitmq",
   redis_url: System.get_env("REDIS_URL") || "redis://localhost:6379"
 
-config :hound, driver: "chrome_driver", browser: "chrome_headless"
+config :test_konsi, TestKonsi.Crawler,
+  queue_name: "test_konsi_queue"
 
-config :elasticsearch, :default,
-  hosts: "http://localhost:9200"
+config :test_konsi, TestKonsi.Cluster,
+  url: "http://localhost:9200",
+  username: "admin",
+  password: "admin"
 
+config :amqp,
+  connections: [
+    myconn: [url: "amqp://guest:guest@rabbitmq"]
+  ],
+  channels: [
+    mychan: [connection: :myconn]
+  ]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

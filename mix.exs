@@ -19,7 +19,7 @@ defmodule TestKonsi.MixProject do
   def application do
     [
       mod: {TestKonsi.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :amqp, :httpoison, :redix]
     ]
   end
 
@@ -47,10 +47,11 @@ defmodule TestKonsi.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:amqp, "~> 3.2"},
-      {:redix, "~> 1.2.3"},
-      {:hound, "~> 1.1.1"},
-      {:elasticsearch, "~> 1.0"}
+      {:amqp, "~> 3.3"},
+      {:redix, "~> 1.1"},
+      {:snap, "~> 0.8.1"},
+      {:poison, "~> 5.0"},
+      {:httpoison, "~> 2.1.0"}
     ]
   end
 

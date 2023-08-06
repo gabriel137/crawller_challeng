@@ -14,8 +14,10 @@ defmodule TestKonsi.Application do
       {Phoenix.PubSub, name: TestKonsi.PubSub},
       # Start Finch
       {Finch, name: TestKonsi.Finch},
+      {TestKonsi.Cluster, []},
+      {Redix, {"redis://localhost:6379/3", [name: :redix]}},
       # Start the Endpoint (http/https)
-      TestKonsiWeb.Endpoint,
+      TestKonsiWeb.Endpoint
       # TestKonsi.Crawler.start_link(),
       # Start a worker by calling: TestKonsi.Worker.start_link(arg)
       # {TestKonsi.Worker, arg}

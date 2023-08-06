@@ -1,6 +1,9 @@
 # TestKonsi
 
 Remember before of execute app
+ * unzip chromedriver-linux64 and move the archive chromedriver to /usr/bin/chromedriver case you using linux
+ * run chromedriver
+ * have stable goog-chrome installed
  * chmod +x install_chromedriver.sh
 
 To start the app:
